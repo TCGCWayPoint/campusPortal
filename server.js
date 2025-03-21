@@ -19,17 +19,26 @@ app.use(cors());
 // Use the built-in Express middleware to parse incoming JSON data from requests
 app.use(express.json());
 
+
 // Establish a connection to the MongoDB database located at 'mongodb://localhost:27017/feedbackDB'
 // 'localhost:27017' is the default MongoDB host and port, and 'feedbackDB' is the database name
 // The options object specifies:
 // - useNewUrlParser: true - Enables the new URL parser to avoid deprecation warnings
 // - useUnifiedTopology: true - Enables the new connection topology engine for better stability
 
-mongoose.connect('mongodb+srv://riodanicaave02:gr4dSch00l@cluster0.mongodb.net/feedbackDB?retryWrites=true&w=majority')
-    .then(() => console.log('MongoDB Connected'))
-    .catch(err => console.error('MongoDB connection error:', err));
+const mongoose = require('mongoose');
 
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 5000, // Timeout after 5 seconds
+})
+  .then(() => console.log('✅ MongoDB Connected'))
+  .catch(err => console.error('❌ MongoDB connection error:', err));
 
+const dns = require('dns');
+dns.setServers(['8.8.8.8', '8.8.4.4']);
+  
 // Define a sample GET route at '/data' to test the server
 app.get('/data', async (req, res) => {
     // Send a JSON response with a simple message
