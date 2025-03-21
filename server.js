@@ -26,16 +26,18 @@ app.use(express.json());
 // - useNewUrlParser: true - Enables the new URL parser to avoid deprecation warnings
 // - useUnifiedTopology: true - Enables the new connection topology engine for better stability
 
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 5000, // Timeout after 5 seconds
-})
-  .then(() => console.log('✅ MongoDB Connected'))
-  .catch(err => console.error('❌ MongoDB connection error:', err));
+require('dotenv').config();  // Load environment variables
+console.log("MongoDB URI:", process.env.MONGODB_URI); // Debugging check
 
-const dns = require('dns');
-dns.setServers(['8.8.8.8', '8.8.4.4']);
+const mongoose = require('mongoose');
+
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+    .then(() => console.log('✅ MongoDB Connected'))
+    .catch(err => console.error('❌ MongoDB connection error:', err));
+
   
 // Define a sample GET route at '/data' to test the server
 app.get('/data', async (req, res) => {
