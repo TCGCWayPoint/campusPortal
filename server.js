@@ -26,8 +26,6 @@ app.use(express.json());
 // - useNewUrlParser: true - Enables the new URL parser to avoid deprecation warnings
 // - useUnifiedTopology: true - Enables the new connection topology engine for better stability
 
-const mongoose = require('mongoose');
-
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
