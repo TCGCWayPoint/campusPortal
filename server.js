@@ -24,14 +24,11 @@ app.use(express.json());
 // The options object specifies:
 // - useNewUrlParser: true - Enables the new URL parser to avoid deprecation warnings
 // - useUnifiedTopology: true - Enables the new connection topology engine for better stability
-mongoose.connect('mongodb://localhost:27017/feedbackDB', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-// Log a success message to the console if the connection is established
-.then(() => console.log('MongoDB Connected'))
-// Log any errors to the console if the connection fails
-.catch(err => console.error(err));
+
+mongoose.connect('mongodb+srv://riodanicaave02:gr4dSch00l@cluster0.mongodb.net/feedbackDB?retryWrites=true&w=majority')
+    .then(() => console.log('MongoDB Connected'))
+    .catch(err => console.error('MongoDB connection error:', err));
+
 
 // Define a sample GET route at '/data' to test the server
 app.get('/data', async (req, res) => {
