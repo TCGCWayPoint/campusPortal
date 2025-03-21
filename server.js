@@ -67,5 +67,5 @@ app.post('/feedback', async (req, res) => {
 // Start the server and listen on port 5000
 // Log a message to the console when the server is running
 app.listen(5000, () => {
-    console.log('Server running on http://localhost:5000');
+    console.log("MongoDB URI:", process.env.MONGODB_URI);
 });
