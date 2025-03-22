@@ -26,6 +26,8 @@ app.use(express.json());
 // - useUnifiedTopology: true - Enables the new connection topology engine for better stability
 
 require('dotenv').config(); // Load environment variables
+console.log("Loaded ENV variables:", process.env); // Debugging
+
 const mongoose = require('mongoose');
 
 const mongoURI = process.env.MONGO_URI; // Read MONGO_URI from .env
@@ -34,12 +36,6 @@ if (!mongoURI) {
     console.error("❌ MongoDB URI is missing. Check your .env file.");
     process.exit(1);
 }
-
-mongoose.connect(mongoURI)
-    .then(() => console.log("✅ MongoDB connected successfully"))
-    .catch(err => console.error("❌ MongoDB connection error:", err));
-
-
   
 // Define a sample GET route at '/data' to test the server
 app.get('/data', async (req, res) => {
