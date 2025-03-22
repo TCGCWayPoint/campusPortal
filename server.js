@@ -25,16 +25,19 @@ app.use(express.json());
 // - useNewUrlParser: true - Enables the new URL parser to avoid deprecation warnings
 // - useUnifiedTopology: true - Enables the new connection topology engine for better stability
 
-const mongoose = require("mongoose");
-require("dotenv").config(); // Load environment variables
+const mongoose = require('mongoose');
 
-// Define the MongoDB URI
-const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://riodanicaave02:gr4dSch00l@cluster0.mongodb.net/feedbackDB?retryWrites=true&w=majority";
+// Replace <db_password> with your actual password
+const uri = "mongodb+srv://riodanicaave02:gr4dSch00l@cluster0.mvonr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 // Connect to MongoDB
-mongoose.connect(MONGO_URI)
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("MongoDB Connection Error:", err));
+mongoose.connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+.then(() => console.log("Connected to MongoDB!"))
+.catch(err => console.error("Error connecting to MongoDB:", err));
+
 
 // Define a sample GET route at '/data' to test the server
 app.get('/data', async (req, res) => {
