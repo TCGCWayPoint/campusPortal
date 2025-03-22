@@ -25,18 +25,16 @@ app.use(express.json());
 // - useNewUrlParser: true - Enables the new URL parser to avoid deprecation warnings
 // - useUnifiedTopology: true - Enables the new connection topology engine for better stability
 
-const mongoose = require('mongoose');
-require('dotenv').config(); // Load environment variables
-console.log("MongoDB URI:", process.env.MONGO_URI); // Debugging
+const mongoose = require("mongoose");
+require("dotenv").config(); // Load environment variables
 
-const mongoURI = process.env.MONGO_URI; // Read MONGO_URI from .env
+// Define the MongoDB URI
+const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://riodanicaave02:gr4dSch00l@cluster0.mongodb.net/feedbackDB?retryWrites=true&w=majority";
 
-if (!mongoURI) {
-    console.error("❌ MongoDB URI is missing. Check your .env file.");
-    process.exit(1);
-}
-  
-mongoose.connect(MONGO_URI);
+// Connect to MongoDB
+mongoose.connect(MONGO_URI)
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.error("MongoDB Connection Error:", err));
 
 // Define a sample GET route at '/data' to test the server
 app.get('/data', async (req, res) => {
