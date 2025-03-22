@@ -1,73 +1,41 @@
-// Import the 'express' module, a web framework for Node.js, to create the server
+require('dotenv').config();
 const express = require('express');
-
-// Import the 'mongoose' module, an ODM library for MongoDB, to interact with the database
-
-// Import the 'cors' module, a middleware to enable Cross-Origin Resource Sharing for requests from different origins
+const mongoose = require('mongoose');
 const cors = require('cors');
+const Feedback = require('./feedback'); // Import the feedback model
 
-// Import the 'Feedback' model from the './feedback' file, which defines the schema for feedback data
-const Feedback = require('./feedback');
-
-// Create an instance of the Express application
 const app = express();
 
-// Use the 'cors' middleware to allow requests from different origins (e.g., Live Server on port 5500)
 app.use(cors());
-
-// Use the built-in Express middleware to parse incoming JSON data from requests
 app.use(express.json());
 
+// Use environment variable for MongoDB URI
+const uri = process.env.MONGODB_URI;
 
-// Establish a connection to the MongoDB database located at 'mongodb://localhost:27017/feedbackDB'
-// 'localhost:27017' is the default MongoDB host and port, and 'feedbackDB' is the database name
-// The options object specifies:
-// - useNewUrlParser: true - Enables the new URL parser to avoid deprecation warnings
-// - useUnifiedTopology: true - Enables the new connection topology engine for better stability
+// Connect to MongoDB (Remove deprecated options)
+mongoose.connect(uri)
+    .then(() => console.log("Connected to MongoDB!"))
+    .catch(err => console.error("Error connecting to MongoDB:", err));
 
-const mongoose = require('mongoose');
-
-// Replace <db_password> with your actual password
-const uri = "mongodb+srv://riodanicaave02:gr4dSch00l@cluster0.mvonr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-
-// Connect to MongoDB
-mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(() => console.log("Connected to MongoDB!"))
-.catch(err => console.error("Error connecting to MongoDB:", err));
-
-
-// Define a sample GET route at '/data' to test the server
-app.get('/data', async (req, res) => {
-    // Send a JSON response with a simple message
+// Sample route to test server connection
+app.get('/data', (req, res) => {
     res.json({ message: "Hello from MongoDB!" });
 });
 
-// Define a POST route at '/feedback' to handle feedback submissions
+// Route for submitting feedback
 app.post('/feedback', async (req, res) => {
     try {
-        // Extract 'name', 'email', and 'message' from the request body
         const { name, email, message } = req.body;
-
-        // Create a new Feedback document using the extracted data
         const newFeedback = new Feedback({ name, email, message });
-
-        // Save the new feedback document to the MongoDB database
         await newFeedback.save();
-
-        // Send a success response with a confirmation message
         res.json({ message: 'Feedback submitted successfully!' });
     } catch (err) {
-        // Handle any errors during the save operation
-        // Send a 500 status response with an error message and the specific error details
         res.status(500).json({ message: 'Error saving feedback', error: err.message });
     }
 });
 
-// Start the server and listen on port 5000
-// Log a message to the console when the server is running
-app.listen(5000, () => {
-    console.log("MongoDB URI:", process.env.MONGODB_URI);
+// Start the server on port 5000
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
