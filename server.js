@@ -2,7 +2,6 @@
 const express = require('express');
 
 // Import the 'mongoose' module, an ODM library for MongoDB, to interact with the database
-const mongoose = require('mongoose');
 
 // Import the 'cors' module, a middleware to enable Cross-Origin Resource Sharing for requests from different origins
 const cors = require('cors');
