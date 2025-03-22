@@ -36,9 +36,7 @@ if (!mongoURI) {
     process.exit(1);
 }
   
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log("Connected to MongoDB"))
-    .catch(err => console.error("MongoDB Connection Error:", err));
+mongoose.connect(MONGO_URI);
 
 // Define a sample GET route at '/data' to test the server
 app.get('/data', async (req, res) => {
